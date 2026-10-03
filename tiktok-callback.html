@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Money Translator — TikTok Authorization</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #0f0f14; color: #f5f0e6; display: flex; min-height: 100vh; align-items: center; justify-content: center; margin: 0; padding: 24px; }
+  .card { background: #1a1a22; border-radius: 16px; padding: 32px; max-width: 560px; width: 100%; box-shadow: 0 8px 40px rgba(0,0,0,.5); }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  p { color: #b9b3a5; font-size: 14px; line-height: 1.5; }
+  #code { font-family: ui-monospace, monospace; font-size: 13px; word-break: break-all; background: #0f0f14; border: 1px solid #333; border-radius: 8px; padding: 16px; margin: 16px 0; color: #ffd166; }
+  button { background: #e63946; color: #fff; border: 0; border-radius: 8px; padding: 12px 24px; font-size: 15px; cursor: pointer; }
+  button:hover { background: #d62839; }
+  .err { color: #e63946; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>The Money Translator — TikTok Authorization</h1>
+  <p id="msg">Reading authorization result…</p>
+  <div id="code" style="display:none"></div>
+  <button id="copy" style="display:none">Copy code</button>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const msg = document.getElementById('msg');
+  const box = document.getElementById('code');
+  const btn = document.getElementById('copy');
+  if (q.get('error')) {
+    msg.innerHTML = '<span class="err">Authorization failed: ' + q.get('error') + ' — ' + (q.get('error_description') || '') + '</span>';
+  } else if (q.get('code')) {
+    msg.textContent = 'Authorized. Copy this code and paste it where your assistant asked for it (it expires in minutes):';
+    box.textContent = q.get('code');
+    box.style.display = 'block';
+    btn.style.display = 'inline-block';
+    btn.onclick = () => { navigator.clipboard.writeText(q.get('code')); btn.textContent = 'Copied!'; };
+  } else {
+    msg.textContent = 'No authorization code found in this URL. Start the TikTok authorization flow again.';
+  }
+</script>
+</body>
+</html>
